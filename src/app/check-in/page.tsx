@@ -46,7 +46,7 @@ export default function CheckIn() {
         const last = new Date(data[0].created_at);
         const now = new Date();
         // 24 hours in milliseconds
-        const diff = 0.1 * 60 * 60 * 1000 - (now.getTime() - last.getTime());
+        const diff = 24 * 60 * 60 * 1000 - (now.getTime() - last.getTime());
         setTimer(diff > 0 ? diff : 0);
         setCanCheckIn(diff <= 0);
       } else {
