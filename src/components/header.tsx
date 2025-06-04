@@ -2,8 +2,21 @@
 import { Button } from "@/components/ui/button";
 import { useAppKit } from "@reown/appkit/react";
 import { useAccount, useDisconnect } from "wagmi";
-import { ShieldCheck, CheckCircle, Skull } from "lucide-react";
+import {
+  ShieldCheck,
+  CheckCircle,
+  Skull,
+  Wallet,
+  User,
+  LogOut,
+} from "lucide-react";
 import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 export default function Header() {
   const { open } = useAppKit();
@@ -48,12 +61,31 @@ export default function Header() {
           <span>Check-in</span>
         </Link>
       </nav>
-      {/* Wallet Button */}
+      {/* Wallet Dropdown */}
       <div>
         {isConnected ? (
-          <Button onClick={logout} variant="outline">
-            {address?.toString().slice(0, 6)}...
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="flex items-center gap-2">
+                <Wallet className="text-blue-600" size={18} />
+                <span>{address?.toString().slice(0, 6)}...</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem asChild>
+                <Link href="/profile" className="flex items-center gap-2">
+                  <User size={16} /> Profile
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={logout}
+                variant="destructive"
+                className="flex items-center gap-2"
+              >
+                <LogOut size={16} /> Log out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         ) : (
           <Button onClick={login} variant="default">
             Connect
