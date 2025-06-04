@@ -20,7 +20,11 @@ export default function Protect() {
     const initializeDataProtector = async () => {
       if (isConnected && connector) {
         const provider = await connector.getProvider();
-        const dataProtector = new IExecDataProtector(provider as any);
+        const dataProtector = new IExecDataProtector(provider as any, {
+          iexecOptions: {
+            smsURL: "https://sms.labs.iex.ec/",
+          },
+        });
         setDataProtectorCore(dataProtector.core);
       }
     };

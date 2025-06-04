@@ -38,12 +38,12 @@ export default function Header() {
   return (
     <header className="w-full flex items-center justify-between px-6 py-3 bg-white shadow-md">
       {/* Logo/Title */}
-      <div className="flex items-center gap-2">
+      <Link href="/" className="flex items-center gap-2">
         <Skull className="text-red-600" size={28} />
         <span className="font-bold text-lg tracking-tight">
           Dead Man&apos;s NFT
         </span>
-      </div>
+      </Link>
       {/* Navigation */}
       <nav className="flex items-center gap-6">
         <Link
