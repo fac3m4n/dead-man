@@ -1,5 +1,7 @@
 # Dead Man's NFT
 
+![Dead Man's NFT Hero Image](/hero.png)
+
 Protect your sensitive data on-chain and ensure it is only revealed if you stop checking in. Inspired by the "dead man's switch" concept, this dApp leverages iExec Data Protector, Supabase, and blockchain technology to provide a secure, decentralized, and automated way to safeguard and reveal your secrets.
 
 ## Overview
