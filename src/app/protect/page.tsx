@@ -55,6 +55,7 @@ export default function Protect() {
             revealMethod,
             revealToken,
           },
+          allowDebug: true,
         });
         toast.success("Your data has been protected!");
         setDataToProtect("");

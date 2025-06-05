@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
-import { Copy, ExternalLink, Share2 } from "lucide-react";
+import { Copy, ExternalLink, Eye } from "lucide-react";
 
 function formatDate(timestamp: number) {
   return new Date(timestamp * 1000).toLocaleString();
@@ -73,6 +73,27 @@ export default function Profile() {
     };
     fetchProtectedData();
   }, [dataProtectorCore, address]);
+
+  const revealData = async (protectedData: string) => {
+    setLoading(true);
+    if (dataProtectorCore) {
+      try {
+        const revealedData = await dataProtectorCore.processProtectedData({
+          protectedData,
+          workerpool: "tdx-labs.pools.iexec.eth",
+          app: "0x1919ceb0c6e60f3B497936308B58F9a6aDf071eC",
+        });
+        toast.success("Your data has been revealed!");
+        console.log("Revealed Data:", revealedData);
+      } catch (err) {
+        toast.error("Error revealing data. Please try again.");
+        console.error("Error revealing data:", err);
+      }
+    } else {
+      toast.error("Wallet not connected or DataProtector not initialized.");
+    }
+    setLoading(false);
+  };
 
   return (
     <div className="max-w-4xl mx-auto mt-12 p-8 bg-white/80 dark:bg-zinc-900/80 rounded-xl shadow-lg border border-zinc-200 dark:border-zinc-800">
@@ -153,10 +174,10 @@ export default function Profile() {
                   )}
                   <Button
                     size="sm"
-                    className="flex items-center gap-1"
-                    disabled
+                    className="flex items-center gap-1 cursor-pointer"
+                    onClick={() => revealData(item.address)}
                   >
-                    <Share2 className="w-4 h-4" /> Share
+                    <Eye className="w-4 h-4" /> Reveal
                   </Button>
                 </CardFooter>
               </Card>
