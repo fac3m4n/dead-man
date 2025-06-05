@@ -64,7 +64,11 @@ export default function Profile() {
         try {
           const protectedData = await dataProtectorCore.getProtectedData({
             owner: address,
-            requiredSchema: { article: "string" },
+            requiredSchema: {
+              article: "string",
+              revealMethod: "string",
+              revealToken: "string",
+            },
           });
           setProtectedDataList(protectedData);
         } catch (err) {

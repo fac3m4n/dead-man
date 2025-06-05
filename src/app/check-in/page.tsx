@@ -106,7 +106,7 @@ export default function CheckIn() {
         </p>
         <Button
           onClick={handleCheckIn}
-          disabled={!canCheckIn || loading || !address}
+          disabled={!canCheckIn || loading || !address || checkIns.length === 0}
           className="w-48 text-lg"
         >
           {loading
@@ -117,9 +117,15 @@ export default function CheckIn() {
         </Button>
         <div className="mt-2 text-center">
           {canCheckIn ? (
-            <span className="text-green-600 font-medium">
-              You can check in now!
-            </span>
+            checkIns.length === 0 ? (
+              <span className="text-yellow-500 font-medium">
+                You do not protected data.
+              </span>
+            ) : (
+              <span className="text-green-600 font-medium">
+                You can check in now.
+              </span>
+            )
           ) : (
             <span className="text-sm text-muted-foreground">
               Next check-in available in{" "}
