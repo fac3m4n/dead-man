@@ -1,36 +1,114 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dead Man's NFT
+
+Protect your sensitive data on-chain and ensure it is only revealed if you stop checking in. Inspired by the "dead man's switch" concept, this dApp leverages iExec Data Protector, Supabase, and blockchain technology to provide a secure, decentralized, and automated way to safeguard and reveal your secrets.
+
+## Overview
+
+Dead Man's NFT allows users to:
+
+- Protect sensitive data using iExec Data Protector.
+- Check in periodically to keep their data private.
+- Automatically reveal data if the user fails to check in for 7 days.
+- Manually reveal data at any time via a "Reveal" button.
+- Store check-in history and protected data using Supabase.
+
+## Features
+
+- **Data Protection:** Encrypt and store your secrets using iExec Data Protector.
+- **Check-In System:** Users must check in every 24 hours to keep their data private.
+- **Automatic Reveal:** If no check-in occurs for 7 days, the data can be revealed.
+- **Manual Reveal:** Users can reveal their data at any time.
+- **Blockchain Integration:** Connect your wallet and manage your data securely.
+- **IPFS Support:** Protected data is stored on IPFS for decentralized access.
+- **Notification System:** Get feedback on actions via toast notifications.
+
+## Technologies Used
+
+- Next.js (React)
+- TypeScript
+- Tailwind CSS (with custom theming)
+- iExec Data Protector
+- Supabase (database and authentication)
+- Wagmi (wallet connection)
+- React Query (data fetching/caching)
+- IPFS (decentralized storage)
+- Sonner (toast notifications)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js (v18+ recommended)
+- npm or yarn
+- Supabase project (for database and authentication)
+- iExec account and wallet
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Clone the repository:**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   git clone https://github.com/fac3m4n/dead-man.git
+   cd dead-man
+   ```
 
-## Learn More
+2. **Install dependencies:**
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. **Set up environment variables:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   - Create a `.env` file in the root directory.
+   - Add your Supabase credentials:
+     ```
+     NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+     NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+     NEXT_PUBLIC_PROJECT_ID=your_project_id
+     ```
+   - (Optional) Add any other required environment variables.
 
-## Deploy on Vercel
+4. **Run the development server:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. **Open the app:**
+   - Visit [http://localhost:3000](http://localhost:3000) in your browser.
+
+## Usage
+
+- **Protect Data:** Go to the "Protect" page, enter your secret, select a reveal method (Twitter/X or Telegram), and protect your data.
+- **Check In:** Visit the "Check-In" page and check in daily to keep your data private.
+- **Profile:** View your protected data, check-in history, and reveal your data if eligible.
+- **Reveal:** If you don't check in for 7 days, your data can be revealed automatically or manually.
+
+## Project Structure
+
+- `src/app/` – Main application pages (Home, Protect, Check-In, Profile)
+- `src/components/` – Reusable UI components (Header, Buttons, etc.)
+- `src/config/` – Blockchain and Wagmi configuration
+- `src/utils/` – Supabase client/server utilities
+- `public/` – Static assets (SVGs, icons)
+
+## Contributing
+
+Contributions are welcome! Please open issues or submit pull requests for improvements or bug fixes.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Acknowledgements
+
+- [iExec Data Protector](https://docs.iex.ec/docs/dataprotector)
+- [Supabase](https://supabase.com/)
+- [Wagmi](https://wagmi.sh/)
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)

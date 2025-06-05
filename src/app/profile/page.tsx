@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Copy, ExternalLink, Eye } from "lucide-react";
+import { createClient } from "@/utils/supabase/client";
 
 function formatDate(timestamp: number) {
   return new Date(timestamp * 1000).toLocaleString();
@@ -41,6 +42,7 @@ export default function Profile() {
     useState<IExecDataProtectorCore | null>(null);
   const [protectedDataList, setProtectedDataList] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [canReveal, setCanReveal] = useState(false);
 
   useEffect(() => {
     const initializeDataProtector = async () => {
@@ -73,6 +75,30 @@ export default function Profile() {
     };
     fetchProtectedData();
   }, [dataProtectorCore, address]);
+
+  // Fetch last check-in
+  useEffect(() => {
+    const fetchLastCheckIn = async () => {
+      if (!address) return;
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("check_ins")
+        .select("created_at")
+        .eq("wallet_address", address.toLowerCase())
+        .order("created_at", { ascending: false })
+        .limit(1);
+      if (!error && data && data.length > 0) {
+        const lastCheckInDate = new Date(data[0].created_at);
+        const now = new Date();
+        const diff = now.getTime() - lastCheckInDate.getTime();
+        setCanReveal(diff > 7 * 24 * 60 * 60 * 1000);
+      } else {
+        // No check-ins, allow reveal
+        setCanReveal(true);
+      }
+    };
+    fetchLastCheckIn();
+  }, [address]);
 
   const revealData = async (protectedData: string) => {
     setLoading(true);
@@ -172,13 +198,21 @@ export default function Profile() {
                       </a>
                     </Button>
                   )}
-                  <Button
-                    size="sm"
-                    className="flex items-center gap-1 cursor-pointer"
-                    onClick={() => revealData(item.address)}
-                  >
-                    <Eye className="w-4 h-4" /> Reveal
-                  </Button>
+                  <span>
+                    <Button
+                      size="sm"
+                      className="flex items-center gap-1 cursor-pointer"
+                      onClick={() => canReveal && revealData(item.address)}
+                      disabled={!canReveal}
+                    >
+                      <Eye className="w-4 h-4" /> Reveal
+                    </Button>
+                    {!canReveal && (
+                      <div className="text-xs text-muted-foreground mt-1">
+                        You can only reveal if you did not check in for 7 days.
+                      </div>
+                    )}
+                  </span>
                 </CardFooter>
               </Card>
             );
