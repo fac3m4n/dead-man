@@ -7,13 +7,25 @@ import {
 } from "@iexec/dataprotector";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { BsTelegram, BsTwitterX } from "react-icons/bs";
+
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 export default function Protect() {
-  const { isConnected, connector, address } = useAccount();
+  const { isConnected, connector } = useAccount();
 
   const [dataProtectorCore, setDataProtectorCore] =
     useState<IExecDataProtectorCore | null>(null);
+  const [name, setName] = useState("");
   const [dataToProtect, setDataToProtect] = useState("");
+  const [revealMethod, setRevealMethod] = useState("");
+  const [revealToken, setRevealToken] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -37,12 +49,18 @@ export default function Protect() {
     if (dataProtectorCore) {
       try {
         const protectedData = await dataProtectorCore.protectData({
+          name,
           data: {
             article: dataToProtect,
+            revealMethod,
+            revealToken,
           },
         });
         toast.success("Your data has been protected!");
         setDataToProtect("");
+        setRevealMethod("");
+        setRevealToken("");
+        setName("");
         console.log("Protected Data:", protectedData);
       } catch (err) {
         toast.error("Error protecting data. Please try again.");
@@ -65,6 +83,20 @@ export default function Protect() {
       </p>
       <form onSubmit={protectData} className="space-y-6">
         <div>
+          <label htmlFor="name" className="block mb-2 font-medium">
+            Name
+          </label>
+          <input
+            id="name"
+            type="text"
+            className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none"
+            placeholder="Enter a name for your protected data"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
           <label htmlFor="dataToProtect" className="block mb-2 font-medium">
             Sensitive Information
           </label>
@@ -77,9 +109,60 @@ export default function Protect() {
             required
           />
         </div>
+        <div>
+          <label htmlFor="revealMethod" className="block mb-2 font-medium">
+            Reveal Method
+          </label>
+          <Select value={revealMethod} onValueChange={setRevealMethod}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a method" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="x">
+                <BsTwitterX /> Twitter / X
+              </SelectItem>
+              <SelectItem value="telegram">
+                <BsTelegram />
+                Telegram
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        {revealMethod && (
+          <div>
+            <label htmlFor="revealToken" className="block mb-2 font-medium">
+              {revealMethod === "x"
+                ? "X Bot Token"
+                : revealMethod === "telegram"
+                ? "Telegram Bot Token"
+                : "Token"}
+            </label>
+            <input
+              id="revealToken"
+              type="text"
+              className="w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-xs focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] outline-none"
+              placeholder={
+                revealMethod === "x"
+                  ? "Enter your X bot token"
+                  : revealMethod === "telegram"
+                  ? "Enter your Telegram bot token"
+                  : "Enter token"
+              }
+              value={revealToken}
+              onChange={(e) => setRevealToken(e.target.value)}
+              required
+            />
+          </div>
+        )}
         <Button
           type="submit"
-          disabled={!isConnected || loading || !dataToProtect}
+          disabled={
+            !isConnected ||
+            loading ||
+            !dataToProtect ||
+            !revealMethod ||
+            !revealToken
+          }
           className="w-full"
         >
           {loading ? "Protecting..." : "Protect Data"}

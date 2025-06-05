@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
-import { Copy, ExternalLink } from "lucide-react";
+import { Copy, ExternalLink, Share2 } from "lucide-react";
 
 function formatDate(timestamp: number) {
   return new Date(timestamp * 1000).toLocaleString();
@@ -83,11 +83,12 @@ export default function Profile() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {protectedDataList.map((item) => {
             const ipfsLink = multiaddrToIpfsGateway(item.multiaddr);
+            console.log(item.schema.article);
             return (
               <Card key={item.address}>
                 <CardHeader className="flex flex-row items-start justify-between">
                   <div>
-                    <CardTitle>Protected Data</CardTitle>
+                    <CardTitle>{item.name}</CardTitle>
                     <div className="text-xs text-muted-foreground">
                       Created: {formatDate(item.creationTimestamp)}
                     </div>
@@ -147,10 +148,17 @@ export default function Profile() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <ExternalLink className="w-4 h-4" /> View on IPFS
+                        <ExternalLink className="w-4 h-4" /> IPFS
                       </a>
                     </Button>
                   )}
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="flex items-center gap-1"
+                  >
+                    <Share2 className="w-4 h-4" /> Share
+                  </Button>
                 </CardFooter>
               </Card>
             );
