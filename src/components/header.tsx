@@ -2,14 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useAppKit } from "@reown/appkit/react";
 import { useAccount, useDisconnect } from "wagmi";
-import {
-  ShieldCheck,
-  CheckCircle,
-  Skull,
-  Wallet,
-  User,
-  LogOut,
-} from "lucide-react";
+import { ShieldCheck, CheckCircle, Wallet, User, LogOut } from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -36,10 +29,10 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full flex items-center justify-between px-6 py-3 bg-white shadow-md">
+    <header className="w-full flex items-center justify-between px-6 py-3 bg-white shadow-md border-b border-gray-200">
       {/* Logo/Title */}
       <Link href="/" className="flex items-center gap-2">
-        <Skull className="text-red-600" size={28} />
+        <span className="text-4xl">💀</span>
         <span className="font-bold text-lg tracking-tight">
           Dead Man&apos;s NFT
         </span>
