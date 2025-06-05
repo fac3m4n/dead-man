@@ -29,6 +29,12 @@ function multiaddrToIpfsGateway(multiaddr: string) {
   return `https://ipfs.iex.ec/ipfs/${cid}`;
 }
 
+function shorten(str: string, chars = 6) {
+  return str.length > chars * 2
+    ? `${str.slice(0, chars)}...${str.slice(-chars)}`
+    : str;
+}
+
 export default function Profile() {
   const { isConnected, connector, address } = useAccount();
   const [dataProtectorCore, setDataProtectorCore] =
@@ -89,9 +95,6 @@ export default function Profile() {
                 <CardHeader className="flex flex-row items-start justify-between">
                   <div>
                     <CardTitle>{item.name}</CardTitle>
-                    <div className="text-xs text-muted-foreground">
-                      Created: {formatDate(item.creationTimestamp)}
-                    </div>
                   </div>
                   <div className="flex gap-1">
                     {item.schema && Object.keys(item.schema).length > 0 ? (
@@ -110,32 +113,28 @@ export default function Profile() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <div className="mb-2">
-                    <span className="font-semibold">Address:</span>{" "}
-                    <span
-                      className="font-mono truncate block max-w-full overflow-hidden"
-                      style={{ wordBreak: "break-all" }}
-                    >
-                      {item.address}
-                    </span>
+                  <div className="text-xs text-muted-foreground">
+                    Created: {formatDate(item.creationTimestamp)}
                   </div>
-                </CardContent>
-                <CardFooter className="flex gap-2">
-                  {item.address && (
-                    <>
+                  <div className="mb-2 flex items-center gap-2">
+                    <span className="font-semibold">Address:</span>{" "}
+                    <span className="font-mono">{shorten(item.address)}</span>
+                    <span>
                       <Button
                         size="sm"
-                        variant="outline"
+                        variant="ghost"
                         onClick={() => {
                           navigator.clipboard.writeText(item.address);
                           toast.success("Address copied!");
                         }}
                         className="flex items-center gap-1 cursor-pointer"
                       >
-                        <Copy className="w-4 h-4" /> Copy Address
+                        <Copy className="w-4 h-4" />
                       </Button>
-                    </>
-                  )}
+                    </span>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex gap-2">
                   {ipfsLink && (
                     <Button
                       size="sm"
@@ -154,8 +153,8 @@ export default function Profile() {
                   )}
                   <Button
                     size="sm"
-                    variant="secondary"
                     className="flex items-center gap-1"
+                    disabled
                   >
                     <Share2 className="w-4 h-4" /> Share
                   </Button>
