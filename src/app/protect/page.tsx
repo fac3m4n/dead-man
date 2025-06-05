@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export default function Protect() {
-  const { isConnected, connector } = useAccount();
+  const { isConnected, connector, address } = useAccount();
 
   const [dataProtectorCore, setDataProtectorCore] =
     useState<IExecDataProtectorCore | null>(null);
