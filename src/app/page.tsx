@@ -15,14 +15,21 @@ export default function Home() {
         Dead Man&apos;s NFT
       </h1>
       <p className="text-lg text-gray-600 mb-8 max-w-xl text-center">
-        Protect your data with a simple NFT. Check in periodically to keep your
-        information safe and secure. If you don&apos;t, your chosen actions will
-        be triggered automatically.
+        Protect your data with{" "}
+        <span>
+          <Link
+            href="https://docs.iex.ec/docs/dataprotector"
+            className="text-primary underline"
+            target="_blank"
+          >
+            iExec Data Protector
+          </Link>
+          .
+        </span>{" "}
+        Check in periodically to keep your information safe and secure. If you
+        don&apos;t, your chosen actions will be triggered automatically.
       </p>
-      <button className="px-8 py-3 bg-blue-600 text-white rounded-full font-semibold text-lg shadow-md hover:bg-blue-700 transition">
-        Get Started
-      </button>
-      {/* Optional: Add a small link for more info */}
+
       <div className="mt-6">
         <Button asChild>
           <Link href="https://github.com/fac3m4n/dead-man" target="_blank">
